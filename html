@@ -1,1 +1,47 @@
-
+<!doctype html>
+<html lang="">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Lukujärjesttys-kysely</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <style>
+            
+            p {text-align: center;
+            font-family:monospace;
+            font-size: 20px;    
+            padding-top: 10px;}
+        
+            body { background-color: lightblue;}    
+ 
+        </style>
+        
+    </head>
+    <body>
+        
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+    </script>
+    
+    <script>  
+    $.getJSON("http://softex-kyselyt.herokuapp.com/kysymykset", function( data ) {
+    
+    //tehdään taulukko
+    var items = [];
+    $.each(data, function( key, d ) {    
+    
+        
+    //sijoitetaan kysymykset taulukkoon
+    items.push("<p>" + d.kysymys + 
+    "<br> <input type='text' id=" + d.kysymys + "></p>"
+    );})
+    
+    //tulostetaan kysymykset sivulle
+    $( "<div/>", {
+	html: items.join( "" )
+	}).appendTo( "body" );
+    });
+    </script>
+    
+    </body>
+</html>
