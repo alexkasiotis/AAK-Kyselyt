@@ -1,65 +1,75 @@
 <!doctype html>
 <html lang="">
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Lukujärjesttys-kysely</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        
-        <style>
-            
-            h1 {text-align: center;
-            font-family: monospace}
-            
-            p {text-align: center;
-            font-family:monospace;
-            font-size: 20px;    
-            padding-top: 10px;}
-            
-            form {text-align: center}
-        
-            body { background-color: lightblue;}
-            
-        </style>
-        
-    </head>
-    <body>
-   
-        <h1>Kysely Launchpadin lukujärjestyksestä</h1>     
-    
-        <form>
-        <div id="lomake">
-        </div>
-        <button onClick="laheta()">Lähetä</button>
-        </form>
- 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
-    </script>
-    
-    <script>  
-    $.getJSON("http://softex-kyselyt.herokuapp.com/kysymykset", function( data ) {
-    
-    //tehdään taulukko
-    var items = [];
-    $.each(data, function( key, d ) {    
-    
-        
-    //sijoitetaan kysymykset taulukkoon
-    items.push("<p>" + d.kysymys + 
-    "<br> <input type='text' id="+ d.kysymys +"></p>"           
-    );})
-    
-    //tulostetaan kysymykset sivulle
-    $( "<div/>", {
-	html: items.join( "" )
-	}).appendTo( "#lomake" );
-    });
-    
-    function laheta(){
-        document.getElementById('laheta')
-    }
-        
-    </script>
-    
-    </body>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+       <title>Lukujärjesttys-kysely</title>
+       <meta name="viewport" content="width=device-width, initial-scale=1">
+
+       <style>
+
+           h1 {text-align: center;
+           font-family: monospace}
+
+           p {text-align: center;
+           font-family:monospace;
+           font-size: 20px;
+           padding-top: 10px;}
+
+           form {text-align: center}
+
+           body { background-color: lightblue;}
+
+       </style>
+
+   </head>
+   <body>
+
+       <h1>Kysely Launchpadin lukujärjestyksestä</h1>
+
+       <form>
+       <div id="lomake">
+       </div>
+       <button onClick="laheta()">Lähetä</button>
+       </form>
+
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+   </script>
+
+   <script>
+   var lomakekentta = [];
+   $.getJSON("http://softex-kyselyt.herokuapp.com/kysymykset", function( data ) {
+
+   //tehdään taulukko
+   var items = [];
+   $.each(data, function( key, d ) {
+
+
+   //sijoitetaan kysymykset taulukkoon
+   items.push("<p>" + d.kysymys + "<br>" +
+   "<br> <input type='text' id="+ d.kysymys_id +"></p>"
+   );
+   //kerätään id tunnukset taulukkoon
+   lomakekentta.push(d.kysymys_id);
+   })
+
+   //tulostetaan kysymykset sivulle
+   $( "<div/>", {
+    html: items.join( "" )
+    }).appendTo( "#lomake" );
+   });
+
+   function laheta(){
+
+       var vastaus;
+       var tunnus;
+       for (i=0; i<lomakekentta.length; i++){
+       tunnus = lomakekentta[i];
+       vastaus = document.getElementById(lomakekentta[i]).value;
+       alert("{'id':"+lomakekentta[i]+",'+vastaus':'"+vastaus+"'}");
+       }
+   }
+   </script>
+
+   </body>
 </html>
