@@ -3,34 +3,30 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-       <title>Lukujärjesttys-kysely</title>
+       <title>Lukujärjestys-kysely</title>
        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-       <style>
+        
+        <link rel="stylesheet" type="text/css" href="styles.css">
+        <link href="https://fonts.googleapis.com/css?family=Anton|Bree+Serif|Oxygen|Titillium+Web" rel="stylesheet">
 
-           h1 {text-align: center;
-           font-family: monospace}
-
-           p {text-align: center;
-           font-family:monospace;
-           font-size: 20px;
-           padding-top: 10px;}
-
-           form {text-align: center}
-
-           body { background-color: lightblue;}
-
-       </style>
 
    </head>
    <body>
 
-       <h1>Kysely Launchpadin lukujärjestyksestä</h1>
-
        <form>
+           
+        
        <div id="lomake">
+           
+     <div id="intro">
+                <h1>Kysely Launchpadin lukujärjestyksestä</h1>
+
+            <p>Tämä kysely on tehty kartoittamaan tämän hetkiseen launchpad-lukujärjestykseen liittyviä ongelma-, sekä kehityskohtia. Pyrimme selvittämään millaisia ominaisuuksia käyttäjät toivovat lukujärjestykseltä. Kysely on luotu osana Digiprojekti-kurssia ja kyselyn ovat luoneet tietojenkäsittely-koulutusohjelman opiskelijat. Kyselyyn ovat osallistuneet digitaalisten palveluiden, sekä ohjelmistotuotannon opiskelijat.</p>
+            </div>
+           <h2>Kysely</h2>
        </div>
-       <button onClick="laheta()">Lähetä</button>
+                                <button onClick="laheta()" id="nappi">Lähetä</button>
        </form>
 
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
@@ -47,8 +43,9 @@
 
    //sijoitetaan kysymykset taulukkoon
    items.push("<p>" + d.kysymys + "<br>" +
-   "<br> <input type='text' id="+ d.kysymys_id +"></p>"
+   "<br> <input type='textarea' id="+ d.kysymys_id +"></p>"
    );
+       
    //kerätään id tunnukset taulukkoon
    lomakekentta.push(d.kysymys_id);
    })
