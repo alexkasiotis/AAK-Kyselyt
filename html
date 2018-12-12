@@ -1,6 +1,18 @@
+
 <!doctype html>
 <html lang="">
     <head>
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-129760292-2"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-129760292-2');
+        </script>
+
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
        <title>Lukujärjestys-kysely</title>
@@ -25,47 +37,138 @@
             <p>Tämä kysely on tehty kartoittamaan tämän hetkiseen launchpad-lukujärjestykseen liittyviä ongelma-, sekä kehityskohtia. Pyrimme selvittämään millaisia ominaisuuksia käyttäjät toivovat lukujärjestykseltä. Kysely on luotu osana Digiprojekti-kurssia ja kyselyn ovat luoneet tietojenkäsittely-koulutusohjelman opiskelijat. Kyselyyn ovat osallistuneet digitaalisten palveluiden, sekä ohjelmistotuotannon opiskelijat.</p>
             </div>
            <h2>Kysely</h2>
-       </div>
-                                <button onClick="laheta()" id="nappi">Lähetä</button>
+           
+           
+           </div>
+           <button onClick="laheta()" id="nappi">Lähetä</button>
        </form>
+       
 
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
    </script>
 
    <script>
    var lomakekentta = [];
-   $.getJSON("http://softex-kyselyt.herokuapp.com/kysymykset", function( data ) {
+   $.getJSON("http://proto315.haaga-helia.fi:8080/Softex/kyselyt/67/kysymykset", function( data ) {
 
    //tehdään taulukko
-   var items = [];
+   
+    var type;
+    var items = [];
    $.each(data, function( key, d ) {
 
 
    //sijoitetaan kysymykset taulukkoon
-   items.push("<p>" + d.kysymys + "<br>" +
-   "<br> <input type='textarea' id="+ d.kysymys_id +"></p>"
-   );
+   
+   // käydään läpi eri kysymystyypit
        
-   //kerätään id tunnukset taulukkoon
-   lomakekentta.push(d.kysymys_id);
-   })
+   if  (d.tyyppi=="tekstikysymys"){
+            type = "text";
+            items.push(d.kysymys+"<br><br><input type="+ type + " id="+d.kysymys_id+" ><br><br>");
+            lomakekentta.push(d.kysymys_id); 
+
+
+        }
+        
+        if  (d.tyyppi=="monivalinta"){
+            type = "checkbox";
+            items.push("<br>"+d.kysymys+"<br><br>");
+            for (i = 0; i < d.vaihtoehdot.length; i++) { 
+            items.push("<input type="+ type +" id="+d.kysymys_id+ " name=" + d.kysymys_id + " value="+ d.vaihtoehdot[i].vaihtoehto +" >"+ d.vaihtoehdot[i].vaihtoehto +"<br><br>");
+             
+            }
+            lomakekentta.push(d.kysymys_id);
+   
+        }
+ 
+        })
 
    //tulostetaan kysymykset sivulle
+   
    $( "<div/>", {
     html: items.join( "" )
     }).appendTo( "#lomake" );
    });
-
+       
+    // lähetä-painike
+       
    function laheta(){
 
-       var vastaus;
-       var tunnus;
-       for (i=0; i<lomakekentta.length; i++){
-       tunnus = lomakekentta[i];
-       vastaus = document.getElementById(lomakekentta[i]).value;
-       alert("{'id':"+lomakekentta[i]+",'+vastaus':'"+vastaus+"'}");
-       }
-   }
+        var vastaus;
+        var tunnus;
+        var lahetys = [];
+        var tyyppi=document.getElementById(lomakekentta[i]).type;
+     
+       lahetys.push("[");
+        for (i=0; i<lomakekentta.length; i++){
+        tunnus = lomakekentta[i];
+
+       var tyyppi=document.getElementById(lomakekentta[i]).type;
+            
+        if (tyyppi=="text") {
+            
+        vastaus = document.getElementById(lomakekentta[i]).value;   
+            
+        if (i < (lomakekentta.length -1)){
+        lahetys.push("{'vastaus' : '" + vastaus + "', 'kysymys' : {'kysymys_id' :" + tunnus + "}},");
+        } else  {
+        lahetys.push("{'vastaus' : '" + vastaus + "', 'kysymys' : {'kysymys_id' :" + tunnus + "}}");    
+        }
+            
+        } 
+        
+        else if (tyyppi=="checkbox" || tyyppi=="radio") {
+            
+        var radios = document.getElementsByName(lomakekentta[i]);
+       
+        for (var x = 0, length = radios.length; x < length; x++){
+    
+            
+        // http://proto315.haaga-helia.fi:8080/Softex/
+        // listalla kaikki vastausvaihtoehdot lahetykseen    
+        
+        if (radios[x].checked){ 
+        vastaus=radios[x].value;  
+            
+          if (i < (lomakekentta.length -1)){  
+      lahetys.push("{'vastaus' : '" + vastaus + "', 'kysymys' : {'kysymys_id' :" + tunnus + "}},");
+          } else {
+              
+           lahetys.push("{'vastaus' : '" + vastaus + "', 'kysymys' : {'kysymys_id' :" + tunnus + "}}");   
+          }
+        }
+        }          
+        }
+      
+        }
+        lahetys.push("]");
+              
+       // vastausten lähettäminen ohtun palvelimelle
+           
+       
+    
+        var jsonData = lahetys.join("");
+       
+        // hatut json-dataan
+       
+        var jsonData1 = jsonData.replace(/'/g, '"');
+    
+        var myJSON = jsonData1;
+        
+       
+        $.ajax({
+        url: 'http://proto315.haaga-helia.fi:8080/Softex/kyselyt/67/vastaukset',
+        type: 'POST',
+        dataType: 'application/json',
+        contentType: 'application/json',
+        data: jsonData1, 
+        success: function() { alert('POST completed. Data:' + myJSON)
+                            },
+        error: function() { alert('POST completed. Data: ' + myJSON)}
+        });
+        }
+        
+       
    </script>
 
    </body>
