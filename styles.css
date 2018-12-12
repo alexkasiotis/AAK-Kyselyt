@@ -1,39 +1,64 @@
-h1 {text-align: center;
-font-family: 'Bree Serif', serif;}
+h1 {
+    
+    text-align: center;
+    font-family: 'Bree Serif', serif;
+
+}
 
 h2 {font-family: 'Bree Serif', serif;}
 
-input {
+input[type="text"] {
     
-    width:50%;
-    padding:25px;
-    margin: 8px;
-    box-sizing: border-box;
+    width:500px;
+    
 }
 
-p {text-align: center;
-font-family: 'Bree Serif', serif;
+input[type="checkbox"] {
+    
+    display:inline-flex;
+    text-align:center;
+    width:20px;
+    position:relative;
+}
+
+p {
+    
+    text-align: center;
+    font-family: 'Bree Serif', serif;
     font-size: 20px;
-    padding-top: 10px;}
+    padding-top: 10px;
+    
+
+}
 
 form {text-align: center}
 
+
+
 body {background-image:url(bookshelf.jpg)}
 
-#lomake {border:2px black solid;
+#lomake {
+    
+    border:2px black solid;
     border-radius:50px;
-    background-color:rgba(255, 221, 159, 0.6);
+    background-color:rgba(255, 221, 159, 0.8);
     max-width:700px;
     margin:auto;
+    position:relative;
+    text-align:center;
+    padding-bottom:50px;
+    font-size:20px;
+    
+
 }
 
 #nappi:hover {
-    background-color: #4CAF50; /* Green */
+    background-color: #4CAF50;
     color: white;
 }
 
 #nappi {
-    margin-top:20px;
+   
     width:100px;
     height:40px;
     font-size:20px;
@@ -41,10 +66,14 @@ body {background-image:url(bookshelf.jpg)}
     color:white;
     border-radius:15px;
     border:2px #333333 solid;
+    position:relative;
+    bottom:50px;
     
 }
 
+
 #intro {
+   
     max-width:500px;
     border: 1px black solid;
     border-radius:80px;
@@ -64,7 +93,7 @@ body {background-image:url(bookshelf.jpg)}
         padding:none;
     }
     #nappi {
-        margin-top:5px;
+        bottom:20px;
     }
 }
 
